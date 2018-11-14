@@ -1,0 +1,117 @@
+basePath: /v1
+consumes:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+definitions:
+  CreatePartientsPayload:
+    description: patient model
+    example:
+      date_of_birth: "2015-03-07T09:11:08Z"
+      id: 46230677-6111-452a-aa0b-39e7e1e06b89
+      name: Amet odio quam modi vel nostrum maxime.
+    properties:
+      date_of_birth:
+        description: date of birth
+        example: "2015-03-07T09:11:08Z"
+        format: date-time
+        type: string
+      id:
+        description: id for patient is unique uuid
+        example: 46230677-6111-452a-aa0b-39e7e1e06b89
+        format: uuid
+        type: string
+      name:
+        description: name of patient
+        example: Amet odio quam modi vel nostrum maxime.
+        type: string
+    required:
+    - name
+    title: CreatePartientsPayload
+    type: object
+  Patient:
+    description: patient model (default view)
+    example:
+      date_of_birth: "2015-03-07T09:11:08Z"
+      id: 46230677-6111-452a-aa0b-39e7e1e06b89
+      name: Amet odio quam modi vel nostrum maxime.
+    properties:
+      date_of_birth:
+        description: date of birth
+        example: "2015-03-07T09:11:08Z"
+        format: date-time
+        type: string
+      id:
+        description: id for patient is unique uuid
+        example: 46230677-6111-452a-aa0b-39e7e1e06b89
+        format: uuid
+        type: string
+      name:
+        description: name of patient
+        example: Amet odio quam modi vel nostrum maxime.
+        type: string
+    required:
+    - name
+    title: 'Mediatype identifier: application/vnd.patient+json; view=default'
+    type: object
+  PatientCollection:
+    description: PatientCollection is the media type for an array of Patient (default
+      view)
+    example:
+    - date_of_birth: "2015-03-07T09:11:08Z"
+      id: 46230677-6111-452a-aa0b-39e7e1e06b89
+      name: Amet odio quam modi vel nostrum maxime.
+    items:
+      $ref: '#/definitions/Patient'
+    title: 'Mediatype identifier: application/vnd.patient+json; type=collection; view=default'
+    type: array
+host: localhost:8080
+info:
+  description: web hook for collect data for health care management project
+  title: The health care management API
+  version: ""
+paths:
+  /patients/:
+    get:
+      operationId: partients#list
+      produces:
+      - application/vnd.patient+json; type=collection
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/PatientCollection'
+      schemes:
+      - http
+      summary: list partients
+      tags:
+      - partients
+    post:
+      operationId: partients#create
+      parameters:
+      - description: patient model
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/CreatePartientsPayload'
+      responses:
+        "201":
+          description: Created
+      schemes:
+      - http
+      summary: create partients
+      tags:
+      - partients
+produces:
+- application/json
+- application/xml
+- application/gob
+- application/x-gob
+responses:
+  Created:
+    description: Created
+schemes:
+- http
+swagger: "2.0"
